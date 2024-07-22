@@ -19,7 +19,7 @@ from xml.etree.ElementTree import VERSION
 TITLE = "ReCP"
 CONFIG_FILE_NAME = ".recp"
 ESC_KEY = 27
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 # Styles
 BACKGROUND_COLOR = curses.COLOR_BLACK
@@ -444,12 +444,19 @@ class ReCP:
 
 
     def getHistory(self): # TODO: REMOVE
+        # get list of recent executed commands
+        recent = subprocess.run("fc -l -250 | cut -c 8-", shell = True, capture_output = True, text = True)
+        
         shell_map = { "/bin/zsh" : ".zsh_history", "/bin/bash" : ".bash_history" }
         shell = os.environ["SHELL"]
 
         fullPath = os.path.join(os.environ["HOME"], shell_map[shell])
         with open(fullPath, 'r', encoding='utf-8', errors='replace') as file:
             history = file.readlines()
+        
+        history.reverse()
+        # prepend recent history to history
+        history = recent.stdout.split("\n") + history
 
         # remove duplicates and keep the order intact
         uniqueHistory = []
