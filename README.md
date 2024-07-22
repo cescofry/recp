@@ -2,6 +2,9 @@
 
 ReCP, pronounced `/ˈres.ə.pi/` is a CLI tool for Linux and MacOS that allows to search and store recent terminal commands to be used when needed.
 
+
+ ![screenshot](https://raw.githubusercontent.com/cescofry/recp/main/screenshot.png)
+
 ## Config
 
 ReCP uses `.recp` configuration files to store saved commands.
