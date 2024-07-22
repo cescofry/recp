@@ -5,7 +5,7 @@ RED='\033[0;31m'
 
 SOURCE="https://raw.githubusercontent.com/cescofry/recp/main/recp.py"
 
-DESTINATION="/usr/local/bin/recp"
+DESTINATION="/usr/local/bin/"
 
 check() {
     local exit_code=$1
@@ -24,7 +24,18 @@ check $? "Creating the temporary file"
 curl -fsL $SOURCE -o $TMPFILE
 check $? "Downloading ReCP"
 
-echo "sudo privilege may be required to move ReCP to /usr/local/bin"
+
+echo "Where do you want to install RecP (default $DESTINATION): "
+read ALTDESTINATION
+
+# check if the user has provided an alternative destination and if so assign it to DESTINATION
+if [ ! -z "$ALTDESTINATION" ]; then
+    DESTINATION=$ALTDESTINATION
+fi
+
+echo "sudo privilege may be required to move ReCP to $DESTINATION"
+
+DESTINATION=$DESTINATION/recp
 sudo mv $TMPFILE $DESTINATION
 check $? "Moving ReCP"
 
