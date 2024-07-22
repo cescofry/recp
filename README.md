@@ -14,7 +14,7 @@ Alternatively a `.recp` file can be provided at lauch as last argument
 Open your terminal and paste this command
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/cescofry/recp/main/install | sh
+curl https://raw.githubusercontent.com/cescofry/recp/main/install | sh
 ```
 
 

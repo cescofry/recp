@@ -24,6 +24,7 @@ check $? "Creating the temporary file"
 curl -fsL $SOURCE -o $TMPFILE
 check $? "Downloading ReCP"
 
+echo "sudo privilege may be required to move ReCP to /usr/local/bin"
 sudo mv $TMPFILE $DESTINATION
 check $? "Moving ReCP"
 
