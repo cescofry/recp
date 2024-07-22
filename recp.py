@@ -8,6 +8,7 @@ import subprocess
 import os
 import sys
 import json
+from typing import OrderedDict
 from xml.etree.ElementTree import VERSION
 
 
@@ -18,7 +19,7 @@ from xml.etree.ElementTree import VERSION
 TITLE = "ReCP"
 CONFIG_FILE_NAME = ".recp"
 ESC_KEY = 27
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 # Styles
 BACKGROUND_COLOR = curses.COLOR_BLACK
@@ -400,6 +401,7 @@ class ReCP:
                 allRecipes.append(value)
                 self.config.recipes = allRecipes
                 self.config.save()
+                self.option = -1
                 
                 self.debug = f"RECIPE ADDED: {len(allRecipes)} | {len(self.config.recipes)}"
                 
@@ -434,6 +436,8 @@ class ReCP:
                 self.config.save()
                 self.option = -1
                 
+                self.debug = f"RECIPE REMOVED: {len(self.config.recipes)}"
+                
                 return
             elif cs == 'n' or c == ESC_KEY:
                 return
@@ -447,7 +451,10 @@ class ReCP:
         with open(fullPath, 'r', encoding='utf-8', errors='replace') as file:
             history = file.readlines()
 
-        return history
+        # remove duplicates and keep the order intact
+        uniqueHistory = []
+        [uniqueHistory.append(x) for x in history if x not in uniqueHistory]
+        return uniqueHistory
  
     def execCommandIfAvailable(self):
         
@@ -528,20 +535,14 @@ class Config:
     def setup(self):
         filePath = self.providedConfigPath()
         if filePath is None:
-            print("\nThe path to the recp file does not exist.")
-            exit(0)
+            filePath = os.path.join(os.path.expanduser('~'), CONFIG_FILE_NAME)
         
-        userPath = os.path.join(os.path.expanduser('~'), CONFIG_FILE_NAME)
-        val = input(f"\nNo RePC file found. ReCP looks for a .recp files in the current working directory and every parent directory un until /. If none is found it will look in the user space ({userPath}). \nDo you want to setup your environment? [y]es, [N]o: ")
+        val = input(f"\nNo RePC file found. Do you want to create one at ({filePath}) ? [Y]es, [n]o: ")
         if val == 'n':
             exit(0)
-        
-        path = input(f"Specify the location where to create the ReCP file. Leave empty for {userPath}: ")
-        if path == "":
-            path = filePath
 
         self.recipes = []
-        self.source = path
+        self.source = filePath
         self.save()
 
     def save(self):
