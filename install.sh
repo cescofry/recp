@@ -24,7 +24,8 @@ check $? "Creating the temporary file"
 curl -fsL $SOURCE -o $TMPFILE
 check $? "Downloading ReCP"
 
-mv $TMPFILE $DESTINATION
+sudo mv $TMPFILE $DESTINATION
+check $? "Moving ReCP"
 
 chmod +x $DESTINATION
 check $? "Making ReCP executable"
