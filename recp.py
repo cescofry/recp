@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 
-from ast import JoinedStr
+
 import curses
 import curses.ascii
-from doctest import FAIL_FAST
-from logging import ERROR
-from math import e, fabs
-from multiprocessing import set_forkserver_preload
-from operator import le
-import select
 import subprocess
 import os
 import sys
@@ -17,24 +11,6 @@ import json
 
 # EXPORT BIN TO PATH:
 # export PATH=$PATH:$HOME/Library/Mobile\ Documents/com\~apple\~CloudDocs/bin:$PATH
-
-
-# TODO:
-# NEW VERSION:
-# X Split screen in 2. Top for Saved Commands, Bottom for History.
-# - Maybe add choice to split left and right
-# X Add Search that filters on both panels simultaneously
-# Make better status bar to
-#   X Show/Hide [H]istory
-#   X [A]dd To Saved, [D]elete from Saved
-#   - [C]opy VS [Enter]Run
-#   X When Saved, open floating window to add name
-#   - Move Saved up and down (Shift + Up/Down)
-#   X Remove letter binding, only use numbers
-#   X [Tab] to switch between Saved and History
-#   - Too big for small devices like the deckx
-
-
 
 
 TITLE = "ReCP"
