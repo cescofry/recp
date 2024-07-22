@@ -3,10 +3,12 @@
 
 import curses
 import curses.ascii
+from doctest import debug
 import subprocess
 import os
 import sys
 import json
+from xml.etree.ElementTree import VERSION
 
 
 # EXPORT BIN TO PATH:
@@ -16,6 +18,7 @@ import json
 TITLE = "ReCP"
 CONFIG_FILE_NAME = ".recp"
 ESC_KEY = 27
+VERSION = "0.1.0"
 
 # Styles
 BACKGROUND_COLOR = curses.COLOR_BLACK
@@ -47,7 +50,7 @@ class ReCP:
         self.shouldShowInfo = False
         self.shouldQuit = False
         self.commandToExecute = None
-        self.debug = ""
+        self.debug = f"Version: {VERSION}"
         
         os.environ.setdefault('ESCDELAY', '25') # Reduce the delay for the ESC key to be recognized
         
@@ -205,7 +208,6 @@ class ReCP:
         if self.inputMode == 1:
             return False
         else:
-            self.debug = f"EXEC :{input} : {self.inputMode}"
             return chr(input).upper() == expected.upper()
        
     def drawStatusBar(self, stdscr, y, width):
@@ -311,7 +313,7 @@ class ReCP:
         else:
             if self.inputMode == 1:
                 self.userInput = f"{self.userInput}{chr(c)}" 
-                self.debug = f"{c} : {chr(c).lower()}"
+                # self.debug = f"{c} : {chr(c).lower()}"
 
         
 
@@ -393,10 +395,13 @@ class ReCP:
                     'recipe': recipe,
                     'title': input.strip()
                 }
-                    
-                self.recipes.append(value)
-                self.config.recipes = self.recipes
+                   
+                allRecipes = self.config.recipes 
+                allRecipes.append(value)
+                self.config.recipes = allRecipes
                 self.config.save()
+                
+                self.debug = f"RECIPE ADDED: {len(allRecipes)} | {len(self.config.recipes)}"
                 
                 return
             else:
