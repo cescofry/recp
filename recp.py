@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 
-
 import curses
 import curses.ascii
-from doctest import debug
 import subprocess
 import os
 import sys
 import json
-from typing import OrderedDict
-from xml.etree.ElementTree import VERSION
+import re
 
 
 # EXPORT BIN TO PATH:
@@ -346,7 +343,13 @@ class ReCP:
 
     def filteredItems(self, itemsSearchTuples, height):
         if len(self.userInput) > 0:
-            filtered = list(filter(lambda tuple: self.userInput in tuple[1], itemsSearchTuples))
+            
+            try:
+                p = re.compile(self.userInput, re.IGNORECASE)
+                filtered = [ s for s in itemsSearchTuples if p.match(s[1]) ]
+            except re.error:
+                filtered = list(filter(lambda tuple: self.userInput in tuple[1], itemsSearchTuples))
+                
             filteredStrings = list(map(lambda x: x[0], filtered))
             return listLimitedToHeight(filteredStrings, limit=height-2)
         
