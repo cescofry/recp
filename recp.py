@@ -221,7 +221,7 @@ class ReCP:
         if self.inputMode == 1:
             items = [
                 "[Tab]Switch",
-                "[Enter]Run Selected" if self.option >= 0 else "",
+                "[Enter]Run" if self.option >= 0 else "",
                 "[ESC]Actions",
                 f" Search: {self.userInput}"
             ]
@@ -232,7 +232,7 @@ class ReCP:
                 keyBindingString('+', True),
                 "[Tab]Switch",
                 "[H]hide" if self.shouldHideOtherMode else "[H]Show",
-                "[Enter]Run Selected" if self.option >= 0 else "",
+                "[Enter]Run" if self.option >= 0 else "",
                 keyBindingString('S', self.option >= 0 and self.isInRecipeMode == False),
                 keyBindingString('D', self.option >= 0 and self.isInRecipeMode),
                 keyBindingString('C', self.option >= 0),
@@ -240,6 +240,8 @@ class ReCP:
             ]
         
         statusBar = "   ".join(filter(lambda item: len(item) > 0, items))
+        if len(statusBar) > width:
+            statusBar = " ".join(filter(lambda item: len(item) > 0, items))
             
         stdscr.attron(curses.color_pair(3))
         stdscr.addstr(y, 0, statusBar)
